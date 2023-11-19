@@ -10,7 +10,61 @@ class DriverAPI {
         private var serializer: Serializer = serializerType
 
 
+        private fun formatListString(notesToFormat: List<Driver>): String =
+            notesToFormat
+                .joinToString(separator = "\n") { note ->
+                    "${drivers.indexOf(note)}: $note"
+                }
 
+        fun add(driver: Driver): Boolean {
+            return drivers.add(driver)
+        }
+        fun deleteDriver(indexToDelete: Int): Driver? {
+            return if (isValidListIndex(indexToDelete, drivers)) {
+                drivers.removeAt(indexToDelete)
+            } else null
+        }
+        fun updateDriver(indexToUpdate: Int, driver: Driver): Boolean {
+            val foundDriver = findDriver(indexToUpdate)
+
+            if ((foundDriver != null) && (driver != null)) {
+                foundDriver.firstName = driver.firstName
+                foundDriver.secondName = driver.secondName
+                foundDriver.phoneNumber = driver.phoneNumber
+                foundDriver.licence = driver.licence
+                return true
+            }
+            return false
+        }
+        fun findDriver(index: Int): Driver? {
+            return if (isValidListIndex(index, drivers)) {
+                drivers[index]
+            } else null
+        }
+        fun numberOfDrivers(): Int {
+            return drivers.size
+        }
+        fun listallDriver():String =
+            if(drivers.isEmpty()) "No drivers in system"
+        else formatListString(drivers)
+
+        private fun isValidListIndex(index: Int, list: List<Any>): Boolean {
+            return (index >= 0) && (index < list.size)
+        }
+        fun isValidIndex(index: Int): Boolean {
+            return isValidListIndex(index, drivers)
+        }
+fun generateDriverID(): Int{
+    var driverID =""
+    val idRng = {(0..9).random()}
+
+    while(driverID.length < 4) {
+        val number = idRng().toString()
+        if(!driverID.contains(number)) driverID +=number
+    }
+    return driverID.toInt()
+
+}
 
 
 
