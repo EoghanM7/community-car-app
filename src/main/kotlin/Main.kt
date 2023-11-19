@@ -1,7 +1,111 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+import controllers.DriverAPI
+import persistence.XMLSerializer
+import utitlities.ScannerInput.readNextInt
+import java.io.File
+
+class CarManageApp {
+    private val driverApi = DriverAPI.DriverAPI(XMLSerializer(File("drivers.xml")))
+
+    fun main() {
+        runMainMenu()
+    }
+
+    fun runMainMenu() {
+
+    }
+
+    fun mainMenu(): Int {
+        return readNextInt(
+            """
+            ╔════════════════════════════════╗
+            ║        TAG Community Car       ║
+            ╚════════════════════════════════╝
+            ╔════════════════════════════════╗
+            ║        Main Menu               ║
+            ║                                ║
+            ║   1.) Driver Menu              ║
+            ║   2.) Trip Menu                ║
+            ║   3.) Admin Menu               ║
+            ║   0.) Exit                     ║
+            ╚════════════════════════════════╝
+            ==>>""".trimMargin(">")
+        )
+    }
+
+    fun DriverMenu(): Int {
+        return readNextInt(
+            """
+            ╔════════════════════════════════╗
+            ║        TAG Community Car       ║
+            ╚════════════════════════════════╝
+            ╔════════════════════════════════╗
+            ║        Main Menu               ║
+            ║    1.) Check in                ║ 
+            ║                                ║
+            ║    2.) View Schedule           ║              
+            ║                                ║
+            ║    3.) View previous Trips     ║
+            ║                                ║
+            ║   0.) Exit                     ║
+            ╚════════════════════════════════╝
+            ==>>""".trimMargin(">")
+        )
+    }
+
+    fun TripMenu(): Int {
+        return readNextInt(
+            """
+            ╔════════════════════════════════╗
+            ║        TAG Community Car       ║
+            ╚════════════════════════════════╝
+            ╔════════════════════════════════╗
+            ║        Trip Menu               ║
+            ║    1.) Start A trip            ║ 
+            ║                                ║
+            ║    2.) View future Trips       ║              
+            ║                                ║
+            ║    3.) View previous Trips     ║
+            ║                                ║
+            ║   0.) Exit                     ║
+            ╚════════════════════════════════╝
+            ==>>""".trimMargin(">")
+        )
+    }
+
+    fun runDriverMenu() {
+        // Implement driver menu logic
+        println("Driver Menu")
+    }
+
+    fun runTripMenu() {
+        // Implement trip menu logic
+        println("Trip Menu")
+    }
+
+    fun runAdminMenu() {
+        // Implement admin menu logic
+        println("Admin Menu")
+    }
+    fun load(){
+        try{
+            driverApi.load()
+        }catch (e: Exception){
+            System.err.println("Error reading from file: $e")
+        }
+    }
+
+    fun save() {
+        try {
+            if (driverApi.save()) {
+                println("Driver log have been saved")
+            } else {
+                println("Driver logs were not saved")
+            }
+        } catch (e: Exception) {
+            System.err.println("Error writing to file: $e")
+        }
+    }
+
+
 }
