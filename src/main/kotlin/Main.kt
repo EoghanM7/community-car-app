@@ -1,3 +1,4 @@
+
 import controllers.DriverAPI
 import persistence.XMLSerializer
 import utitlities.ScannerInput.readNextInt
@@ -86,4 +87,25 @@ class CarManageApp {
         // Implement admin menu logic
         println("Admin Menu")
     }
+    fun load(){
+        try{
+            driverApi.load()
+        }catch (e: Exception){
+            System.err.println("Error reading from file: $e")
+        }
+    }
+
+    fun save() {
+        try {
+            if (driverApi.save()) {
+                println("Driver log have been saved")
+            } else {
+                println("Driver logs were not saved")
+            }
+        } catch (e: Exception) {
+            System.err.println("Error writing to file: $e")
+        }
+    }
+
+
 }
