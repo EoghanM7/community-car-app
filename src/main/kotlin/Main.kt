@@ -1,21 +1,19 @@
-
-
 import controllers.DriverAPI
 import models.Driver
+import mu.KotlinLogging
 import persistence.XMLSerializer
 import utitlities.ScannerInput.readNextInt
 import utitlities.ScannerInput.readNextLine
 import java.io.File
+import kotlin.system.exitProcess
 
-class CarManageApp {
+
     private val driverApi = DriverAPI.DriverAPI(XMLSerializer(File("drivers.xml")))
+    private val logger = KotlinLogging.logger {}
 
-    fun main() {
+
+    fun main(args: Array<String>) {
         runMainMenu()
-    }
-
-    fun runMainMenu() {
-        // Implement main menu logic
     }
 
     fun mainMenu(): Int {
@@ -69,19 +67,99 @@ class CarManageApp {
         )
     }
 
+    fun AdminMenu(): Int {
+        return readNextInt(
+            """
+            ╔════════════════════════════════╗
+            ║        TAG Community Car       ║
+            ╚════════════════════════════════╝
+            ╔════════════════════════════════╗
+            ║        Trip Menu               ║
+            ║   1.) Add a driver             ║
+            ║   2.) update a Driver          ║
+            ║   3.) List Driver              ║
+            ║   4.) Delete a Driver          ║
+            ║   0.) Exit                     ║
+            ╚════════════════════════════════╝
+            ==>>""".trimMargin(">")
+        )
+    }
+
+    fun runMainMenu() {
+        loadDriver()
+        logger.info { "Drivers and Trip data loaded." }
+        do {
+            when (val option = mainMenu()) {
+
+                1 -> runDriverMenu()
+                2 -> runTripMenu()
+                3 -> runAdminMenu()
+                0 -> exitProcess(0)
+
+            }
+            saveDriver()
+        } while (true)
+    }
+
     fun runDriverMenu() {
-        // Implement driver menu logic
-        println("Driver Menu")
+        loadDriver()
+        logger.info { "Drivers and Trip data loaded." }
+        do {
+            when (val option = DriverMenu()) {
+
+                1 -> checkIn()
+                2 -> viewSchedule()
+                3 -> viewPreviousTrips()
+                0 -> exitProcess(0)
+
+            }
+            saveDriver()
+        } while (true)
+    }
+
+    private fun checkIn() {
+        TODO("Not yet implemented")
+    }
+
+    private fun viewSchedule() {
+        TODO("Not yet implemented")
+    }
+
+    private fun viewPreviousTrips() {
+        TODO("Not yet implemented")
     }
 
     fun runTripMenu() {
-        // Implement trip menu logic
-        println("Trip Menu")
+        loadDriver()
+        logger.info { "Drivers and Trip data loaded." }
+        do {
+            when (val option = TripMenu()) {
+
+                1 -> runDriverMenu()
+                2 -> runTripMenu()
+                3 -> runAdminMenu()
+                0 -> exitProcess(0)
+
+            }
+            saveDriver()
+        } while (true)
     }
 
     fun runAdminMenu() {
-        // Implement admin menu logic
-        println("Admin Menu")
+        loadDriver()
+        logger.info { "Drivers and Trip data loaded." }
+        do {
+            when (val option = AdminMenu()) {
+
+                1 -> addDriver()
+                2 -> listDrivers()
+                3 -> updateDriver()
+                4 -> deleteDriver()
+                0 -> exitProcess(0)
+
+            }
+            saveDriver()
+        } while (true)
     }
 
     fun listDrivers() {
@@ -153,7 +231,7 @@ class CarManageApp {
         }
     }
 
-    fun load() {
+    fun loadDriver() {
         try {
             driverApi.load()
         } catch (e: Exception) {
@@ -161,7 +239,7 @@ class CarManageApp {
         }
     }
 
-    fun save() {
+    fun saveDriver() {
         try {
             if (driverApi.save()) {
                 println("Driver logs have been saved")
@@ -172,4 +250,3 @@ class CarManageApp {
             System.err.println("Error writing to file: $e")
         }
     }
-}
