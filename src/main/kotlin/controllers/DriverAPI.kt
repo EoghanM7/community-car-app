@@ -39,6 +39,46 @@ class DriverAPI {
             return false
         }
 
+        fun searchDriversByID(driverID: Int): String {
+            val matchingDrivers = drivers.filter { driver ->
+                driver.driverID == driverID
+            }
+
+            return if (matchingDrivers.isNotEmpty()) {
+                matchingDrivers.joinToString(separator = "\n") { driver ->
+                    "${drivers.indexOf(driver)}: $driver"
+                }
+            } else {
+                "No matching drivers found for ID: $driverID"
+            }
+        }
+        fun searchDriversByID2(driverID: Int): String {
+            val matchingDrivers = drivers.filter { driver ->
+                driver.driverID == driverID
+            }
+
+            return if (matchingDrivers.isNotEmpty()) {
+                matchingDrivers.joinToString(separator = "\n") { driver ->
+                    driver.secondName
+                }
+            } else {
+                "No matching drivers found for ID: $driverID"
+            }
+        }
+        fun searchDriversByID3(driverID: Int): String {
+            val matchingDrivers = drivers.filter { driver ->
+                driver.driverID == driverID
+            }
+
+            return if (matchingDrivers.isNotEmpty()) {
+                matchingDrivers.joinToString(separator = "\n") { driver ->
+                    driver.firstName
+                }
+            } else {
+                "No matching drivers found for ID: $driverID"
+            }
+        }
+
         fun findDriver(index: Int): Driver? {
             return if (isValidListIndex(index, drivers)) {
                 drivers[index]
