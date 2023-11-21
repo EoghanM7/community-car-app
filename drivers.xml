@@ -1,0 +1,11 @@
+<object-stream>
+  <list>
+    <models.Driver>
+      <firstName>eoghan</firstName>
+      <secondName>mcgee</secondName>
+      <phoneNumber>877777777</phoneNumber>
+      <licence>0</licence>
+      <driverID>3704</driverID>
+    </models.Driver>
+  </list>
+</object-stream>

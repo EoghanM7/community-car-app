@@ -19,11 +19,13 @@ class DriverAPI {
         fun add(driver: Driver): Boolean {
             return drivers.add(driver)
         }
+
         fun deleteDriver(indexToDelete: Int): Driver? {
             return if (isValidListIndex(indexToDelete, drivers)) {
                 drivers.removeAt(indexToDelete)
             } else null
         }
+
         fun updateDriver(indexToUpdate: Int, driver: Driver): Boolean {
             val foundDriver = findDriver(indexToUpdate)
 
@@ -36,53 +38,50 @@ class DriverAPI {
             }
             return false
         }
+
         fun findDriver(index: Int): Driver? {
             return if (isValidListIndex(index, drivers)) {
                 drivers[index]
             } else null
         }
+
         fun numberOfDrivers(): Int {
             return drivers.size
         }
-        fun listallDriver():String =
-            if(drivers.isEmpty()) "No drivers in system"
-        else formatListString(drivers)
+
+        fun listallDriver(): String =
+            if (drivers.isEmpty()) "No drivers in system"
+            else formatListString(drivers)
 
         private fun isValidListIndex(index: Int, list: List<Any>): Boolean {
             return (index >= 0) && (index < list.size)
         }
+
         fun isValidIndex(index: Int): Boolean {
             return isValidListIndex(index, drivers)
         }
-fun generateDriverID(): Int{
-    var driverID =""
-    val idRng = {(0..9).random()}
 
-    while(driverID.length < 4) {
-        val number = idRng().toString()
-        if(!driverID.contains(number)) driverID +=number
+        fun generateDriverID(): Int {
+            var driverID = ""
+            val idRng = { (0..9).random() }
+
+            while (driverID.length < 4) {
+                val number = idRng().toString()
+                if (!driverID.contains(number)) driverID += number
+            }
+            return driverID.toInt()
+
+        }
+
+
+        @Throws(Exception::class)
+        fun load() {
+            drivers = serializer.read() as ArrayList<Driver>
+        }
+
+        fun save(): Boolean {
+            serializer.write(drivers)
+            return true
+        }
     }
-    return driverID.toInt()
-
-}
-
-
-
-
-
-
-
-
-
-
-@Throws(Exception::class)
-fun load() {
-    drivers = serializer.read() as ArrayList<Driver>
-}
-
-  fun save(): Boolean{
-      serializer.write(drivers)
-      return true
-  }
-}
 }
