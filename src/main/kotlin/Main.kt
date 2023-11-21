@@ -9,16 +9,21 @@ import kotlin.system.exitProcess
 
 
     private val driverApi = DriverAPI.DriverAPI(XMLSerializer(File("drivers.xml")))
+
     private val logger = KotlinLogging.logger {}
 
 
-    fun main(args: Array<String>) {
+    fun main() {
         runMainMenu()
     }
 
     fun mainMenu(): Int {
         return readNextInt(
             """
+                
+                
+                
+                
             ╔════════════════════════════════╗
             ║        TAG Community Car       ║
             ╚════════════════════════════════╝
@@ -29,13 +34,16 @@ import kotlin.system.exitProcess
             ║   3.) Admin Menu               ║
             ║   0.) Exit                     ║
             ╚════════════════════════════════╝
-            ==>>""".trimMargin(">")
+            Enter Choice -> """.trimMargin(">")
         )
     }
 
-    fun DriverMenu(): Int {
+    fun driverMenu(): Int {
         return readNextInt(
             """
+                
+                
+                
             ╔════════════════════════════════╗
             ║        TAG Community Car       ║
             ╚════════════════════════════════╝
@@ -46,13 +54,18 @@ import kotlin.system.exitProcess
             ║   3.) View previous Trips      ║
             ║   0.) Exit                     ║
             ╚════════════════════════════════╝
-            ==>>""".trimMargin(">")
+            
+            
+            Enter Choice -> """.trimMargin(">")
         )
     }
 
-    fun TripMenu(): Int {
+    fun tripMenu(): Int {
         return readNextInt(
             """
+                
+                
+                
             ╔════════════════════════════════╗
             ║        TAG Community Car       ║
             ╚════════════════════════════════╝
@@ -63,13 +76,16 @@ import kotlin.system.exitProcess
             ║   3.) View previous Trips      ║
             ║   0.) Exit                     ║
             ╚════════════════════════════════╝
-            ==>>""".trimMargin(">")
+            Enter Choice -> """.trimMargin(">")
         )
     }
 
-    fun AdminMenu(): Int {
+    fun adminMenu(): Int {
         return readNextInt(
             """
+                
+                
+                
             ╔════════════════════════════════╗
             ║        TAG Community Car       ║
             ╚════════════════════════════════╝
@@ -81,21 +97,21 @@ import kotlin.system.exitProcess
             ║   4.) Delete a Driver          ║
             ║   0.) Exit                     ║
             ╚════════════════════════════════╝
-            ==>>""".trimMargin(">")
+            Enter Choice -> """.trimMargin(">")
         )
     }
 
     fun runMainMenu() {
         loadDriver()
-        logger.info { "Drivers and Trip data loaded." }
+        logger.info { "You are now in the main Menu." }
         do {
             when (val option = mainMenu()) {
 
                 1 -> runDriverMenu()
                 2 -> runTripMenu()
                 3 -> runAdminMenu()
-                0 -> exitProcess(0)
-
+                0 -> exit()
+                else -> println("Invalid option entered: $option")
             }
             saveDriver()
         } while (true)
@@ -103,43 +119,32 @@ import kotlin.system.exitProcess
 
     fun runDriverMenu() {
         loadDriver()
-        logger.info { "Drivers and Trip data loaded." }
+        logger.info { "You are in the driver Menu." }
         do {
-            when (val option = DriverMenu()) {
+            when (val option = driverMenu()) {
 
                 1 -> checkIn()
                 2 -> viewSchedule()
                 3 -> viewPreviousTrips()
-                0 -> exitProcess(0)
-
+                0 -> runMainMenu()
+                else -> println("Invalid option entered: $option")
             }
             saveDriver()
         } while (true)
     }
 
-    private fun checkIn() {
-        TODO("Not yet implemented")
-    }
-
-    private fun viewSchedule() {
-        TODO("Not yet implemented")
-    }
-
-    private fun viewPreviousTrips() {
-        TODO("Not yet implemented")
-    }
 
     fun runTripMenu() {
         loadDriver()
-        logger.info { "Drivers and Trip data loaded." }
+        logger.info { "You are in the trip menu." }
         do {
-            when (val option = TripMenu()) {
+            when (val option = tripMenu()) {
 
                 1 -> runDriverMenu()
                 2 -> runTripMenu()
                 3 -> runAdminMenu()
-                0 -> exitProcess(0)
-
+                0 -> runMainMenu()
+                else -> println("Invalid option entered: $option")
             }
             saveDriver()
         } while (true)
@@ -147,20 +152,32 @@ import kotlin.system.exitProcess
 
     fun runAdminMenu() {
         loadDriver()
-        logger.info { "Drivers and Trip data loaded." }
+        logger.info { "You are now in the admin menu." }
         do {
-            when (val option = AdminMenu()) {
+            when (val option = adminMenu()) {
 
                 1 -> addDriver()
                 2 -> listDrivers()
                 3 -> updateDriver()
                 4 -> deleteDriver()
-                0 -> exitProcess(0)
-
+                0 -> runMainMenu()
+                else -> println("Invalid option entered: $option")
             }
             saveDriver()
         } while (true)
     }
+
+private fun checkIn() {
+    TODO("Not yet implemented")
+}
+
+private fun viewSchedule() {
+    TODO("Not yet implemented")
+}
+
+private fun viewPreviousTrips() {
+    TODO("Not yet implemented")
+}
 
     fun listDrivers() {
         println(driverApi.listallDriver())
@@ -231,6 +248,11 @@ import kotlin.system.exitProcess
         }
     }
 
+
+fun exit() {
+    logger.info { "Exit function invoked" }
+    exitProcess(0)
+}
     fun loadDriver() {
         try {
             driverApi.load()
