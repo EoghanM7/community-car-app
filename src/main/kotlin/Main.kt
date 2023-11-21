@@ -1,16 +1,19 @@
+
 import controllers.DriverAPI
+import controllers.TripAPI
 import models.Driver
+import models.trip
 import mu.KotlinLogging
 import persistence.XMLSerializer
 import utitlities.ScannerInput.readNextInt
 import utitlities.ScannerInput.readNextLine
 import java.io.File
+import java.time.Instant
 import kotlin.system.exitProcess
 
-
-    private val driverApi = DriverAPI.DriverAPI(XMLSerializer(File("drivers.xml")))
-
-    private val logger = KotlinLogging.logger {}
+val driverApi = DriverAPI.DriverAPI(XMLSerializer(File("drivers.xml")))
+     val tripApi = TripAPI.TripAPI(XMLSerializer(File("trips.xml")))
+     val logger = KotlinLogging.logger {}
 
 
     fun main() {
@@ -100,6 +103,12 @@ import kotlin.system.exitProcess
             Enter Choice -> """.trimMargin(">")
         )
     }
+fun loginMenu(): Int {
+    return readNextInt(
+        """
+               Enter Driver ID -> """.trimMargin(">")
+    )
+}
 
     fun runMainMenu() {
         loadDriver()
@@ -119,7 +128,8 @@ import kotlin.system.exitProcess
 
     fun runDriverMenu() {
         loadDriver()
-        logger.info { "You are in the driver Menu." }
+        val login = readNextInt("Enter your DriverID: ")
+        println("Welcome  Mr/Mrs ${driverApi.searchDriversByID2(login).replaceFirstChar{it.uppercase()}}")
         do {
             when (val option = driverMenu()) {
 
@@ -140,7 +150,7 @@ import kotlin.system.exitProcess
         do {
             when (val option = tripMenu()) {
 
-                1 -> runDriverMenu()
+                1 -> startTrip()
                 2 -> runTripMenu()
                 3 -> runAdminMenu()
                 0 -> runMainMenu()
@@ -152,13 +162,13 @@ import kotlin.system.exitProcess
 
     fun runAdminMenu() {
         loadDriver()
-        logger.info { "You are now in the admin menu." }
+
         do {
             when (val option = adminMenu()) {
 
                 1 -> addDriver()
-                2 -> listDrivers()
-                3 -> updateDriver()
+                2 -> updateDriver()
+                3 -> listDrivers()
                 4 -> deleteDriver()
                 0 -> runMainMenu()
                 else -> println("Invalid option entered: $option")
@@ -197,6 +207,29 @@ private fun viewPreviousTrips() {
             println("Driver not added to the database")
         }
     }
+
+fun startTrip() {
+    val login = readNextInt("Enter your DriverID: ")
+    println("Driver Selected for this trip ->  ${driverApi.searchDriversByID3(login).replaceFirstChar{it.uppercase()}}  ${driverApi.searchDriversByID2(login)}")
+    val firstName = driverApi.searchDriversByID3(login).replaceFirstChar{it.uppercase()}
+    val secondName = driverApi.searchDriversByID2(login).replaceFirstChar{it.uppercase()}
+    val startLocation = readNextLine("Enter start Location: ")
+    val destination = readNextLine("Enter the destination: ")
+    val passenger = readNextLine(" Enter the name of your passenger: ")
+    val startTime = Instant.now()
+    println("The trip has commenced at ${Instant.now()}")
+
+    readNextLine("Enter any key to stop the trip!")
+    val endTime = Instant.now()
+    println("The trip has Stopped at ${Instant.now()}")
+    val added = tripApi.add(trip(login, firstName, secondName, startLocation = startLocation ,destination, passenger = passenger, startTime =startTime, endTime = endTime, ))
+    if (added) {
+        println("Trip completed")
+    } else {
+        println("Driver not added to the database")
+    }
+}
+
 
     fun deleteDriver() {
         listDrivers()
