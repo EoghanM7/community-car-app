@@ -33,11 +33,18 @@ class TripAPI {
             "$numberOfTrips trips found for driver $login:\n" + formatListString(driverTrips)
         }
     }
-
+        fun viewAllTrips() {
+            if (trips.isEmpty()) {
+                println("No trips completed")
+            } else {
+                val formattedList = formatListString(trips)
+                println("Completed trips:\n$formattedList")
+            }
+        }
     @Throws(Exception::class)
 
     fun loadTrip() {
-        trips = serializer.read() as java.util.ArrayList<trip>
+        trips = serializer.read() as ArrayList<trip>
     }
 
     fun saveTrip(): Boolean {

@@ -84,7 +84,7 @@ fun tripMenu(): Int {
             ║        Trip Menu               ║
             ║   1.) Start A trip             ║
             ║   2.) Schedule a Trip          ║
-            ║   2.) View future Trips        ║
+            ║   3.) View future Trips        ║
             ║   3.) View previous Trips      ║
             ║   0.) Exit                     ║
             ╚════════════════════════════════╝
@@ -166,8 +166,8 @@ fun runTripMenu() {
 
             1 -> startTrip()
             2 -> scheduleTrip()
-
-
+            3 -> listAllScheduled()
+            4 -> viewPreviousTrips()
             0 -> exit()
             else -> println("Invalid option entered: $option")
         }
@@ -175,6 +175,13 @@ fun runTripMenu() {
         saveTrip()
         saveFuture()
     } while (true)
+}
+
+fun viewPreviousTrips(){
+    println(tripApi.viewAllTrips())
+}
+fun listAllScheduled(){
+    println(futureTripsAPI.listAllFutureTrips())
 }
 
 fun runAdminMenu() {
