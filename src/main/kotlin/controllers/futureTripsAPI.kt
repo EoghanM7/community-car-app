@@ -1,19 +1,28 @@
 package controllers
 
-import models.futuretrip
-
+import models.futureTrip
 import persistence.Serializer
 
-class futureTripAPI {
 
-    class FutureTripAPI(serializerType: Serializer) {
-        private var futuretrips = ArrayList<futuretrip>()
-        private var serializer: Serializer = serializerType
+class FutureTripsAPI{
+class FutureTripsAPI(serializerType: Serializer) {
+
+    private var futureTrips = ArrayList<futureTrip>()
+    private var serializer: Serializer = serializerType
 
 
-        fun add(trip: futuretrip): Boolean {
-            return futuretrips.add(trip)
+        fun addTrip(trip: futureTrip): Boolean {
+            return futureTrips.add(trip)
         }
+
+
+    @Throws(Exception::class)
+    fun loadFuture() {
+        futureTrips = serializer.read() as ArrayList<futureTrip>
     }
 
-}
+    fun saveFuture(): Boolean {
+        serializer.write(futureTrips)
+        return true
+    }
+}}

@@ -2,16 +2,14 @@ package controllers
 
 import models.trip
 import persistence.Serializer
-
+import java.util.*
 class TripAPI {
 
     class TripAPI(serializerType: Serializer) {
         private var trips = ArrayList<trip>()
         private var serializer: Serializer = serializerType
 
-    init {
-        loadTrip()
-    }
+
 
     fun add(trip: trip): Boolean {
         return trips.add(trip)

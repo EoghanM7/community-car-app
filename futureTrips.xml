@@ -1,0 +1,10 @@
+<object-stream>
+  <list>
+    <models.futureTrip>
+      <driverID>3704</driverID>
+      <passenger>Becky</passenger>
+      <startLocation> Wexford</startLocation>
+      <scheduledStartTime>2023-12-17T21:00:00</scheduledStartTime>
+    </models.futureTrip>
+  </list>
+</object-stream>
