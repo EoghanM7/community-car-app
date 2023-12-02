@@ -22,8 +22,8 @@ class TripAPI {
             }
 
     fun searchTripsById(login: Int): String {
-        val driverTrips = trips.filter { trip ->
-            trip.driverID == login
+        val driverTrips = trips.filter { futuretrip ->
+            futuretrip.driverID == login
         }
 
         val numberOfTrips = driverTrips.size
