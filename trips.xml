@@ -1,0 +1,24 @@
+<object-stream>
+  <list>
+    <models.trip>
+      <driverID>3704</driverID>
+      <driverName>Eoghan</driverName>
+      <driverSname>Mcgee</driverSname>
+      <startLocation>Wecford</startLocation>
+      <destination>Waterford</destination>
+      <passenger>Ciaran</passenger>
+      <startTime>2023-12-02T18:31:30.633029800Z</startTime>
+      <endTime>2023-12-02T18:31:32.320083400Z</endTime>
+    </models.trip>
+    <models.trip>
+      <driverID>3704</driverID>
+      <driverName>Eoghan</driverName>
+      <driverSname>Mcgee</driverSname>
+      <startLocation>Wexford</startLocation>
+      <destination>Waterford</destination>
+      <passenger>Ciaran</passenger>
+      <startTime>2023-12-02T18:45:31.587321800Z</startTime>
+      <endTime>2023-12-02T18:45:32.953629500Z</endTime>
+    </models.trip>
+  </list>
+</object-stream>
