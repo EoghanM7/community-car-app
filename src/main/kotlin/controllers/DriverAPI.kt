@@ -10,10 +10,10 @@ class DriverAPI {
         private var serializer: Serializer = serializerType
 
 
-        private fun formatListString(notesToFormat: List<Driver>): String =
-            notesToFormat
-                .joinToString(separator = "\n") { note ->
-                    "${drivers.indexOf(note)}: $note"
+        private fun formatListString(driverToFormat: List<Driver>): String =
+            driverToFormat
+                .joinToString(separator = "\n") { driver ->
+                    "${drivers.indexOf(driver)}: $driver"
                 }
 
         fun add(driver: Driver): Boolean {
