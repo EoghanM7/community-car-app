@@ -226,7 +226,7 @@ fun startTrip() {
     if (added) {
         println("Trip completed")
     } else {
-        println("Driver not added to the database")
+        println("Trip not saved!")
     }
 }
 
