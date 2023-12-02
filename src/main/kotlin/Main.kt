@@ -1,7 +1,9 @@
 
 import controllers.DriverAPI
 import controllers.TripAPI
+import controllers.futureTripAPI
 import models.Driver
+import models.futuretrip
 import models.trip
 import mu.KotlinLogging
 import persistence.XMLSerializer
@@ -9,7 +11,10 @@ import utitlities.ScannerInput.readNextInt
 import utitlities.ScannerInput.readNextLine
 import java.io.File
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.system.exitProcess
+
 
 val driverApi = DriverAPI.DriverAPI(XMLSerializer(File("drivers.xml")))
      val tripApi = TripAPI.TripAPI(XMLSerializer(File("trips.xml")))
@@ -52,9 +57,10 @@ val driverApi = DriverAPI.DriverAPI(XMLSerializer(File("drivers.xml")))
             ╚════════════════════════════════╝
             ╔════════════════════════════════╗
             ║        Driver Menu             ║
-            ║   1.) Check in                 ║
-            ║   2.) View Schedule            ║
-            ║   3.) View previous Trips      ║
+            ║   1.) View Schedule            ║
+            ║                                ║
+            ║   2.) View Completed Trips     ║
+            ║                                ║
             ║   0.) Exit                     ║
             ╚════════════════════════════════╝
             
@@ -133,9 +139,8 @@ fun loginMenu(): Int {
         do {
             when (val option = driverMenu()) {
 
-                1 -> checkIn()
-                2 -> viewSchedule()
-                3 -> viewPreviousTrips()
+                1 -> viewSchedule()
+                2 -> viewCompletedTrips(login)
                 0 -> runMainMenu()
                 else -> println("Invalid option entered: $option")
             }
@@ -143,9 +148,14 @@ fun loginMenu(): Int {
         } while (true)
     }
 
+fun viewSchedule() {
+    TODO("Not yet implemented")
+}
 
-    fun runTripMenu() {
+
+fun runTripMenu() {
         loadDriver()
+        loadTrip()
         logger.info { "You are in the trip menu." }
         do {
             when (val option = tripMenu()) {
@@ -157,6 +167,7 @@ fun loginMenu(): Int {
                 else -> println("Invalid option entered: $option")
             }
             saveDriver()
+            saveTrip()
         } while (true)
     }
 
@@ -170,6 +181,7 @@ fun loginMenu(): Int {
                 2 -> updateDriver()
                 3 -> listDrivers()
                 4 -> deleteDriver()
+                5 -> scheduleTrip()
                 0 -> runMainMenu()
                 else -> println("Invalid option entered: $option")
             }
@@ -177,20 +189,20 @@ fun loginMenu(): Int {
         } while (true)
     }
 
-private fun checkIn() {
-    TODO("Not yet implemented")
+fun scheduleTrip() {
+    val driverId = readNextInt("Enter Driver ID for trip: ")
+    val passenger = readNextLine("Enter Passenger Name: ")
+    val startLocation = readNextLine("Enter the Pickup location")
+    val scheduledDateTimeInput = readNextLine("Enter scheduled date and time (yyyy-MM-dd HH:mm): ")
+    val scheduledDateTime = LocalDateTime.parse(scheduledDateTimeInput, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+
+    val scheduledTrip = futureTripAPI.add(driverId,passenger,startLocation,scheduledDateTime)
+    println("Trip has been Scheduled!")
 }
 
-private fun viewSchedule() {
-    TODO("Not yet implemented")
-}
 
-private fun viewPreviousTrips() {
-    TODO("Not yet implemented")
-}
-
-    fun listDrivers() {
-        println(driverApi.listallDriver())
+fun listDrivers() {
+        println(driverApi.listAllDriver())
     }
 
     fun addDriver() {
@@ -222,7 +234,7 @@ fun startTrip() {
     readNextLine("Enter any key to stop the trip!")
     val endTime = Instant.now()
     println("The trip has Stopped at ${Instant.now()}")
-    val added = tripApi.add(trip(login, firstName, secondName, startLocation = startLocation ,destination, passenger = passenger, startTime =startTime, endTime = endTime, ))
+    val added = tripApi.add(trip(login, firstName, secondName, startLocation = startLocation ,destination, passenger = passenger, startTime =startTime, endTime = endTime ))
     if (added) {
         println("Trip completed")
     } else {
@@ -305,3 +317,28 @@ fun exit() {
             System.err.println("Error writing to file: $e")
         }
     }
+
+fun loadTrip() {
+    try {
+        tripApi.loadTrip()
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
+    }
+}
+
+fun saveTrip() {
+    try {
+        if (tripApi.saveTrip()) {
+            println("Trips have been saved")
+        } else {
+            println("Trips were not saved")
+        }
+    } catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
+}
+
+fun viewCompletedTrips(login: Int) {
+    println("Completed trips for $login: ")
+    println(tripApi.searchTripsById(login))
+}

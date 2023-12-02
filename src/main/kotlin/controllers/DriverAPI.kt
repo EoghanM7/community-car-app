@@ -89,7 +89,7 @@ class DriverAPI {
             return drivers.size
         }
 
-        fun listallDriver(): String =
+        fun listAllDriver(): String =
             if (drivers.isEmpty()) "No drivers in system"
             else formatListString(drivers)
 
