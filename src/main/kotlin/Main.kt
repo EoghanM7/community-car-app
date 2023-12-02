@@ -143,7 +143,7 @@ fun runDriverMenu() {
     do {
         when (val option = driverMenu()) {
 
-            1 -> viewSchedule()
+            1 -> viewSchedule(login)
             2 -> viewCompletedTrips(login)
             0 -> runMainMenu()
             else -> println("Invalid option entered: $option")
@@ -206,8 +206,8 @@ fun runAdminMenu() {
     } while (true)
 }
 
-fun viewSchedule() {
-    TODO("Not yet implemented")
+fun viewSchedule(login: Int) {
+    println(futureTripsAPI.searchSchedTripsById(login))
 }
 fun scheduleTrip() {
     val driverId = readNextInt("Enter Driver ID for trip: ")

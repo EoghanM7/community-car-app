@@ -16,25 +16,10 @@ class FutureTripsAPI(serializerType: Serializer) {
             return futureTrips.add(trip)
         }
 
+
     fun listAllFutureTrips(): String =
         if (futureTrips.isEmpty()) "No drivers in system"
         else formatListString(futureTrips)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     private fun formatListString(tripsToFormat: List<futureTrip>): String =
@@ -45,6 +30,12 @@ class FutureTripsAPI(serializerType: Serializer) {
     private fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0) && (index < list.size)
     }
+    fun searchSchedTripsById(login: Int): List<futureTrip> {
+        return futureTrips.filter { futuretrip ->
+            futuretrip.driverID == login
+        }
+    }
+
     fun isValidIndex(index: Int): Boolean {
         return isValidListIndex(index, futureTrips)
     }
