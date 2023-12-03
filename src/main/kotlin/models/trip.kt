@@ -1,8 +1,6 @@
 package models
 
-
 import java.time.Instant
-
 
 data class trip(
     var driverID: Int,
@@ -12,5 +10,5 @@ data class trip(
     var destination: String,
     var passenger: String,
     var startTime: Instant,
-    var endTime: Instant,
-    )
+    var endTime: Instant
+)

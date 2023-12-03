@@ -5,5 +5,5 @@ data class Driver(
     var secondName: String,
     var phoneNumber: Int,
     var licence: Int,
-    var driverID: Int,
+    var driverID: Int
 )

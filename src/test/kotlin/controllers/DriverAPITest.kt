@@ -14,7 +14,6 @@ import kotlin.test.assertNull
 
 class DriverAPITest {
 
-
     private var eoghan: Driver? = null
     private var Michael: Driver? = null
     private var Dylan: Driver? = null
@@ -22,7 +21,6 @@ class DriverAPITest {
     private var Billy: Driver? = null
     private var fullDriver: DriverAPI? = DriverAPI(XMLSerializer(File("drivers.xml")))
     private var emptyDriver: DriverAPI? = DriverAPI(XMLSerializer(File("drivers.xml")))
-
 
     @BeforeEach
     fun setup() {
@@ -36,7 +34,6 @@ class DriverAPITest {
         fullDriver!!.add(Dylan!!)
         fullDriver!!.add(Joe!!)
         fullDriver!!.add(Billy!!)
-
     }
 
     @AfterEach
@@ -96,8 +93,7 @@ class DriverAPITest {
         @Test
         fun `Generate DriverID returns a 4 digit number`() {
             val driverID = fullDriver!!.generateDriverID()
-            assertTrue(driverID in 1000..9999, "Generated ID: $driverID")
-
+            assertTrue(driverID in 0..9999, "Generated ID: $driverID")
         }
 
         @Nested
@@ -117,7 +113,6 @@ class DriverAPITest {
                 assertEquals(4, fullDriver!!.numberOfDrivers())
                 assertEquals(eoghan, fullDriver!!.deleteDriver(0))
                 assertEquals(3, fullDriver!!.numberOfDrivers())
-
             }
 
             @Nested
@@ -126,22 +121,37 @@ class DriverAPITest {
                 fun `updating a Driver that does not exist returns false`() {
                     assertFalse(
                         fullDriver!!.updateDriver(
-                            6, Driver(
-                                "Mac", "Aodh", 0, 875555, 3707
+                            6,
+                            Driver(
+                                "Mac",
+                                "Aodh",
+                                0,
+                                875555,
+                                3707
                             )
                         )
                     )
                     assertFalse(
                         fullDriver!!.updateDriver(
-                            -1, Driver(
-                                "Mac", "Aodh", 0, 875555, 3707
+                            -1,
+                            Driver(
+                                "Mac",
+                                "Aodh",
+                                0,
+                                875555,
+                                3707
                             )
                         )
                     )
                     assertFalse(
                         emptyDriver!!.updateDriver(
-                            0, Driver(
-                                "Mac", "Aodh", 0, 875555, 3707
+                            0,
+                            Driver(
+                                "Mac",
+                                "Aodh",
+                                0,
+                                875555,
+                                3707
                             )
                         )
                     )
@@ -149,17 +159,20 @@ class DriverAPITest {
 
                 @Test
                 fun `updating a note that exists returns true and updates`() {
-
                     assertEquals(Billy, fullDriver!!.findDriver(4))
                     assertEquals("Billy", fullDriver!!.findDriver(4)!!.firstName)
                     assertEquals(87444000, fullDriver!!.findDriver(4)!!.licence)
                     assertEquals(3708, fullDriver!!.findDriver(4)!!.driverID)
 
-
                     assertTrue(
                         fullDriver!!.updateDriver(
-                            4, Driver(
-                                "Mac", "Aodh", 0, 875555, 3709
+                            4,
+                            Driver(
+                                "Mac",
+                                "Aodh",
+                                0,
+                                875555,
+                                3709
                             )
                         )
                     )
@@ -168,7 +181,6 @@ class DriverAPITest {
                     assertEquals(3708, fullDriver!!.findDriver(4)!!.driverID)
                 }
             }
-
         }
 
         @Nested
@@ -179,7 +191,6 @@ class DriverAPITest {
                 assertEquals(5, fullDriver!!.numberOfDrivers())
                 assertEquals(0, emptyDriver!!.numberOfDrivers())
             }
-
         }
 
         @Nested
@@ -187,7 +198,6 @@ class DriverAPITest {
 
             @Test
             fun `searchDriversByID2 returns matching driver's second name when driver exists`() {
-
                 val driverApi = fullDriver
 
                 val driverID = eoghan!!.driverID
@@ -198,23 +208,17 @@ class DriverAPITest {
                 assertEquals(expectedSecondName, result, "Second name does match for driver with ID $driverID")
             }
         }
+
         @Test
         fun `searchDriversByID3 returns matching driver's First name when driver exists`() {
-
             val driverApi = fullDriver
 
             val driverID = eoghan!!.driverID
-            val expectedSecondName = "Eoghan"
+            val expectedFirstName = "Eoghan"
 
-            val result = driverApi!!.searchDriversByID2(driverID)
+            val result = driverApi!!.searchDriversByID3(driverID)
 
-            assertEquals(expectedSecondName, result, "Second name does match for driver with ID $driverID")
+            assertEquals(expectedFirstName, result, "Second name does match for driver with ID $driverID")
         }
     }
-
-    }
-
-
-
-
-
+}

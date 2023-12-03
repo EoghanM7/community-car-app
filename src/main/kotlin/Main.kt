@@ -1,4 +1,3 @@
-
 import controllers.DriverAPI
 import controllers.FutureTripsAPI
 import controllers.TripAPI
@@ -15,13 +14,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.system.exitProcess
 
-
 val driverApi = DriverAPI(XMLSerializer(File("drivers.xml")))
 
-val tripApi = TripAPI.TripAPI(XMLSerializer(File("trips.xml")))
-val futureTripsAPI = FutureTripsAPI.FutureTripsAPI(XMLSerializer(File("futureTrips.xml")))
+val tripApi = TripAPI(XMLSerializer(File("trips.xml")))
+val futureTripsAPI = FutureTripsAPI(XMLSerializer(File("futureTrips.xml")))
 val logger = KotlinLogging.logger {}
-
 
 fun main() {
     runMainMenu()
@@ -113,7 +110,6 @@ fun adminMenu(): Int {
     )
 }
 
-
 fun runMainMenu() {
     loadDriver()
     loadTrip()
@@ -121,7 +117,6 @@ fun runMainMenu() {
     logger.info { "You are now in the main Menu." }
     do {
         when (val option = mainMenu()) {
-
             1 -> runDriverMenu()
             2 -> runTripMenu()
             3 -> runAdminMenu()
@@ -142,7 +137,6 @@ fun runDriverMenu() {
     println("Welcome  Mr/Mrs ${driverApi.searchDriversByID2(login).replaceFirstChar { it.uppercase() }}")
     do {
         when (val option = driverMenu()) {
-
             1 -> viewSchedule(login)
             2 -> viewCompletedTrips(login)
             0 -> runMainMenu()
@@ -154,8 +148,6 @@ fun runDriverMenu() {
     } while (true)
 }
 
-
-
 fun runTripMenu() {
     loadDriver()
     loadTrip()
@@ -163,7 +155,6 @@ fun runTripMenu() {
     logger.info { "You are in the trip menu." }
     do {
         when (val option = tripMenu()) {
-
             1 -> startTrip()
             2 -> scheduleTrip()
             3 -> listAllScheduled()
@@ -177,10 +168,11 @@ fun runTripMenu() {
     } while (true)
 }
 
-fun viewPreviousTrips(){
+fun viewPreviousTrips() {
     println(tripApi.viewAllTrips())
 }
-fun listAllScheduled(){
+
+fun listAllScheduled() {
     println(futureTripsAPI.listAllFutureTrips())
 }
 
@@ -191,7 +183,6 @@ fun runAdminMenu() {
 
     do {
         when (val option = adminMenu()) {
-
             1 -> addDriver()
             2 -> updateDriver()
             3 -> listDrivers()
@@ -202,20 +193,19 @@ fun runAdminMenu() {
         saveDriver()
         saveTrip()
         saveFuture()
-
     } while (true)
 }
 
 fun viewSchedule(login: Int) {
     println(futureTripsAPI.searchSchedTripsById(login))
 }
+
 fun scheduleTrip() {
     val driverId = readNextInt("Enter Driver ID for trip: ")
     val passenger = readNextLine("Enter Passenger Name: ")
     val startLocation = readNextLine("Enter the Pickup location")
     val scheduledDateTimeInput = readNextLine("Enter scheduled date and time (yyyy-MM-dd HH:mm): ")
     val scheduledDateTime = LocalDateTime.parse(scheduledDateTimeInput, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-
 
     val futureTrip = futureTrip(driverId, passenger, startLocation, scheduledDateTime)
     val addedTo = futureTripsAPI.addTrip(futureTrip)
@@ -226,7 +216,6 @@ fun scheduleTrip() {
         println("Trip Not scheduled!")
     }
 }
-
 
 fun listDrivers() {
     println(driverApi.listAllDriver())
@@ -251,7 +240,7 @@ fun startTrip() {
     val login = readNextInt("Enter your DriverID: ")
     println(
         "Driver Selected for this trip ->  ${
-            driverApi.searchDriversByID3(login).replaceFirstChar { it.uppercase() }
+        driverApi.searchDriversByID3(login).replaceFirstChar { it.uppercase() }
         }  ${driverApi.searchDriversByID2(login)}"
     )
     val firstName = driverApi.searchDriversByID3(login).replaceFirstChar { it.uppercase() }
@@ -284,7 +273,6 @@ fun startTrip() {
     }
 }
 
-
 fun deleteDriver() {
     listDrivers()
     if (driverApi.numberOfDrivers() > 0) {
@@ -316,12 +304,12 @@ fun updateDriver() {
                 if (driverApi.updateDriver(
                         indexToUpdate,
                         Driver(
-                            firstName,
-                            secondName,
-                            phoneNumber,
-                            licence,
-                            driverID = driverID.driverID
-                        )
+                                firstName,
+                                secondName,
+                                phoneNumber,
+                                licence,
+                                driverID = driverID.driverID
+                            )
                     )
                 ) {
                     println("Update Successful")
@@ -334,7 +322,6 @@ fun updateDriver() {
         }
     }
 }
-
 
 fun exit() {
     logger.info { "Exit function invoked" }
@@ -383,7 +370,7 @@ fun saveTrip() {
 
 fun loadFuture() {
     try {
-       futureTripsAPI.loadFuture()
+        futureTripsAPI.loadFuture()
     } catch (e: Exception) {
         System.err.println("Error reading from file: $e")
     }
@@ -400,6 +387,7 @@ fun saveFuture() {
         System.err.println("Error writing to file: $e")
     }
 }
+
 fun viewCompletedTrips(login: Int) {
     println("Completed trips for $login: ")
     println(tripApi.searchTripsById(login))

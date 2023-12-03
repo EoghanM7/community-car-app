@@ -1,6 +1,5 @@
 package persistence
 
-
 import com.thoughtworks.xstream.XStream
 import com.thoughtworks.xstream.io.xml.DomDriver
 import models.Driver
@@ -15,13 +14,12 @@ data class XMLSerializer(private val file: File) : Serializer {
     @Throws(Exception::class)
     override fun read(): Any {
         val xStream = XStream(DomDriver())
-        xStream.allowTypes(arrayOf(Driver::class.java, trip::class.java ,futureTrip::class.java))
+        xStream.allowTypes(arrayOf(Driver::class.java, trip::class.java, futureTrip::class.java))
         val inputStream = xStream.createObjectInputStream(FileReader(file))
         val obj = inputStream.readObject() as Any
         inputStream.close()
         return obj
     }
-
 
     @Throws(Exception::class)
     override fun write(obj: Any?) {
@@ -30,6 +28,4 @@ data class XMLSerializer(private val file: File) : Serializer {
         outputStream.writeObject(obj)
         outputStream.close()
     }
-
-
 }
