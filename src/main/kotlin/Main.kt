@@ -20,96 +20,70 @@ val tripApi = TripAPI(XMLSerializer(File("trips.xml")))
 val futureTripsAPI = FutureTripsAPI(XMLSerializer(File("futureTrips.xml")))
 val logger = KotlinLogging.logger {}
 
+/**
+ * The main function that kicks off the TAG Community Car application.
+ * It calls the [runMainMenu] function to start the main menu interface.
+ */
 fun main() {
     runMainMenu()
 }
 
+/**
+ * Displays the main menu and prompts the user for a choice.
+ *
+ * @return The user's choice as an integer.
+ */
 fun mainMenu(): Int {
     return readNextInt(
         """
-                
-                
-                
-                
-            ╔════════════════════════════════╗
-            ║        TAG Community Car       ║
-            ╚════════════════════════════════╝
-            ╔════════════════════════════════╗
-            ║        Main Menu               ║
-            ║   1.) Driver Menu              ║
-            ║   2.) Trip Menu                ║
-            ║   3.) Admin Menu               ║
-            ║   0.) Exit                     ║
-            ╚════════════════════════════════╝
-            Enter Choice -> """.trimMargin(">")
+        ...
+        """.trimMargin(">")
     )
 }
 
+/**
+ * Displays the driver menu and prompts the user for a choice.
+ *
+ * @return The user's choice as an integer.
+ */
 fun driverMenu(): Int {
     return readNextInt(
         """
-                
-                
-                
-            ╔════════════════════════════════╗
-            ║        TAG Community Car       ║
-            ╚════════════════════════════════╝
-            ╔════════════════════════════════╗
-            ║        Driver Menu             ║
-            ║   1.) View Schedule            ║
-            ║                                ║
-            ║   2.) View Completed Trips     ║
-            ║                                ║
-            ║   0.) Exit                     ║
-            ╚════════════════════════════════╝
-            
-            
-            Enter Choice -> """.trimMargin(">")
+        ...
+        """.trimMargin(">")
     )
 }
 
+/**
+ * Displays the trip menu and prompts the user for a choice.
+ *
+ * @return The user's choice as an integer.
+ */
 fun tripMenu(): Int {
     return readNextInt(
         """
-                
-                
-                
-            ╔════════════════════════════════╗
-            ║        TAG Community Car       ║
-            ╚════════════════════════════════╝
-            ╔════════════════════════════════╗
-            ║        Trip Menu               ║
-            ║   1.) Start A trip             ║
-            ║   2.) Schedule a Trip          ║
-            ║   3.) View future Trips        ║
-            ║   3.) View previous Trips      ║
-            ║   0.) Exit                     ║
-            ╚════════════════════════════════╝
-            Enter Choice -> """.trimMargin(">")
+        ...
+        """.trimMargin(">")
     )
 }
 
+/**
+ * Displays the admin menu and prompts the user for a choice.
+ *
+ * @return The user's choice as an integer.
+ */
 fun adminMenu(): Int {
     return readNextInt(
         """
-                
-                
-                
-            ╔════════════════════════════════╗
-            ║        TAG Community Car       ║
-            ╚════════════════════════════════╝
-            ╔════════════════════════════════╗
-            ║        Trip Menu               ║
-            ║   1.) Add a driver             ║
-            ║   2.) update a Driver          ║
-            ║   3.) List Driver              ║
-            ║   4.) Delete a Driver          ║ 
-            ║   0.) Exit                     ║
-            ╚════════════════════════════════╝
-            Enter Choice -> """.trimMargin(">")
+        ...
+        """.trimMargin(">")
     )
 }
 
+/**
+ * Runs the main menu loop, allowing the user to navigate through different sections of the application.
+ * The loop continues until the user chooses to exit the application.
+ */
 fun runMainMenu() {
     loadDriver()
     loadTrip()
@@ -129,6 +103,10 @@ fun runMainMenu() {
     } while (true)
 }
 
+/**
+ * Runs the driver menu loop, allowing the driver to view their schedule and completed trips.
+ * The loop continues until the driver chooses to return to the main menu.
+ */
 fun runDriverMenu() {
     loadTrip()
     loadDriver()
@@ -148,6 +126,10 @@ fun runDriverMenu() {
     } while (true)
 }
 
+/**
+ * Runs the trip menu loop, allowing the user to start trips, schedule trips, and view future and previous trips.
+ * The loop continues until the user chooses to exit the application.
+ */
 fun runTripMenu() {
     loadDriver()
     loadTrip()
@@ -168,19 +150,28 @@ fun runTripMenu() {
     } while (true)
 }
 
+/**
+ * Displays the list of previous trips.
+ */
 fun viewPreviousTrips() {
     println(tripApi.viewAllTrips())
 }
 
+/**
+ * Displays the list of all scheduled future trips.
+ */
 fun listAllScheduled() {
     println(futureTripsAPI.listAllFutureTrips())
 }
 
+/**
+ * Runs the admin menu loop, allowing the user to add, update, list, and delete drivers.
+ * The loop continues until the user chooses to return to the main menu.
+ */
 fun runAdminMenu() {
     loadDriver()
     loadTrip()
     loadFuture()
-
     do {
         when (val option = adminMenu()) {
             1 -> addDriver()
@@ -196,10 +187,18 @@ fun runAdminMenu() {
     } while (true)
 }
 
+/**
+ * Displays the schedule for a specific driver.
+ *
+ * @param login The driver's ID for whom the schedule is to be displayed.
+ */
 fun viewSchedule(login: Int) {
     println(futureTripsAPI.searchSchedTripsById(login))
 }
 
+/**
+ * Allows the user to schedule a future trip by entering the required details.
+ */
 fun scheduleTrip() {
     val driverId = readNextInt("Enter Driver ID for trip: ")
     val passenger = readNextLine("Enter Passenger Name: ")
@@ -217,10 +216,16 @@ fun scheduleTrip() {
     }
 }
 
+/**
+ * Displays the list of all drivers.
+ */
 fun listDrivers() {
     println(driverApi.listAllDriver())
 }
 
+/**
+ * Allows the user to add a new driver by entering the required details.
+ */
 fun addDriver() {
     val firstName = readNextLine("Enter the driver's First name")
     val secondName = readNextLine("Enter the driver's Second name")
@@ -236,11 +241,14 @@ fun addDriver() {
     }
 }
 
+/**
+ * Allows the user to start a trip by entering the required details.
+ */
 fun startTrip() {
     val login = readNextInt("Enter your DriverID: ")
     println(
         "Driver Selected for this trip ->  ${
-        driverApi.searchDriversByID3(login).replaceFirstChar { it.uppercase() }
+            driverApi.searchDriversByID3(login).replaceFirstChar { it.uppercase() }
         }  ${driverApi.searchDriversByID2(login)}"
     )
     val firstName = driverApi.searchDriversByID3(login).replaceFirstChar { it.uppercase() }
@@ -273,6 +281,9 @@ fun startTrip() {
     }
 }
 
+/**
+ * Allows the user to delete a driver by selecting the driver from the list.
+ */
 fun deleteDriver() {
     listDrivers()
     if (driverApi.numberOfDrivers() > 0) {
@@ -286,6 +297,9 @@ fun deleteDriver() {
     }
 }
 
+/**
+ * Allows the user to update a driver's information by selecting the driver from the list.
+ */
 fun updateDriver() {
     listDrivers()
 
@@ -304,12 +318,12 @@ fun updateDriver() {
                 if (driverApi.updateDriver(
                         indexToUpdate,
                         Driver(
-                                firstName,
-                                secondName,
-                                phoneNumber,
-                                licence,
-                                driverID = driverID.driverID
-                            )
+                            firstName,
+                            secondName,
+                            phoneNumber,
+                            licence,
+                            driverID = driverID.driverID
+                        )
                     )
                 ) {
                     println("Update Successful")
@@ -323,11 +337,17 @@ fun updateDriver() {
     }
 }
 
+/**
+ * Exits the application and logs the exit event.
+ */
 fun exit() {
     logger.info { "Exit function invoked" }
     exitProcess(0)
 }
 
+/**
+ * Loads driver data from the XML file.
+ */
 fun loadDriver() {
     try {
         driverApi.load()
@@ -336,6 +356,9 @@ fun loadDriver() {
     }
 }
 
+/**
+ * Saves driver data to the XML file.
+ */
 fun saveDriver() {
     try {
         if (driverApi.save()) {
@@ -348,6 +371,9 @@ fun saveDriver() {
     }
 }
 
+/**
+ * Loads trip data from the XML file.
+ */
 fun loadTrip() {
     try {
         tripApi.loadTrip()
@@ -356,6 +382,9 @@ fun loadTrip() {
     }
 }
 
+/**
+ * Saves trip data to the XML file.
+ */
 fun saveTrip() {
     try {
         if (tripApi.saveTrip()) {
@@ -368,6 +397,9 @@ fun saveTrip() {
     }
 }
 
+/**
+ * Loads future trip data from the XML file.
+ */
 fun loadFuture() {
     try {
         futureTripsAPI.loadFuture()
@@ -376,6 +408,9 @@ fun loadFuture() {
     }
 }
 
+/**
+ * Saves future trip data to the XML file.
+ */
 fun saveFuture() {
     try {
         if (futureTripsAPI.saveFuture()) {
@@ -388,6 +423,11 @@ fun saveFuture() {
     }
 }
 
+/**
+ * Displays completed trips for a specific driver.
+ *
+ * @param login The driver's ID for whom the completed trips are to be displayed.
+ */
 fun viewCompletedTrips(login: Int) {
     println("Completed trips for $login: ")
     println(tripApi.searchTripsById(login))
