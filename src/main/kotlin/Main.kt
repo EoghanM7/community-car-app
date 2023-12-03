@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 import kotlin.system.exitProcess
 
 
-val driverApi = DriverAPI.DriverAPI(XMLSerializer(File("drivers.xml")))
+val driverApi = DriverAPI(XMLSerializer(File("drivers.xml")))
 
 val tripApi = TripAPI.TripAPI(XMLSerializer(File("trips.xml")))
 val futureTripsAPI = FutureTripsAPI.FutureTripsAPI(XMLSerializer(File("futureTrips.xml")))

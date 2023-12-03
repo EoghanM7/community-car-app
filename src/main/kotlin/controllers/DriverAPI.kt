@@ -4,20 +4,17 @@ import models.Driver
 import persistence.Serializer
 import java.util.*
 
-class DriverAPI {
-    class DriverAPI(serializerType: Serializer) {
-        private var drivers = ArrayList<Driver>()
-        private var serializer: Serializer = serializerType
+class DriverAPI(serializerType: Serializer) {
+    private var drivers = ArrayList<Driver>()
+    private var serializer: Serializer = serializerType
 
+    fun add(driver: Driver): Boolean {
+        return drivers.add(driver)
+    }
 
-        private fun formatListString(driverToFormat: List<Driver>): String =
-            driverToFormat
-                .joinToString(separator = "\n") { driver ->
-                    "${drivers.indexOf(driver)}: $driver"
-                }
-
-        fun add(driver: Driver): Boolean {
-            return drivers.add(driver)
+    private fun formatListString(driverToFormat: List<Driver>): String =
+        driverToFormat.joinToString(separator = "\n") { driver ->
+            "${drivers.indexOf(driver)}: $driver"
         }
 
         fun deleteDriver(indexToDelete: Int): Driver? {
@@ -124,4 +121,4 @@ class DriverAPI {
             return true
         }
     }
-}
+
